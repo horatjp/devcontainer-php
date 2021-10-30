@@ -1,0 +1,32 @@
+{
+    "name": "PHP Development",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "workspace",
+    "workspaceFolder": "/var/www",
+    "remoteUser": "vscode",
+    "settings": {
+        "[php]": {
+            "editor.formatOnSave": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/bower_components": true,
+            "**/*.code-search": true,
+            "**/vendor/*/**": true
+        }
+    },
+    "extensions": [
+        "mikestead.dotenv",
+        "EditorConfig.EditorConfig",
+        "mhutchie.git-graph",
+        "eamodio.gitlens",
+        "onecentlin.laravel-blade",
+        "onecentlin.laravel5-snippets",
+        "emilast.LogFileHighlighter",
+        "neilbrayfield.php-docblocker",
+        "bmewburn.vscode-intelephense-client",
+        "felixfbecker.php-debug",
+    ]
+}

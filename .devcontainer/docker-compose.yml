@@ -1,0 +1,107 @@
+version: "3.9"
+
+services:
+  workspace:
+    build:
+      context: ./docker/workspace
+      args:
+        USERNAME: ${USERNAME-vscode}
+        USER_UID: ${USER_UID-1000}
+        USER_GID: ${USER_GID-1000}
+        TIME_ZONE: ${TIME_ZONE-UTC}
+        LOCALE: ${LOCALE-C}
+    tty: true
+    volumes:
+      - ../:/var/www
+      - ./docker/workspace/config/php.ini:/usr/local/etc/php/conf.d/99-php.ini
+    working_dir: /var/www
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - "${IP_ADDRESS_SETTING}80:80"
+      - "${IP_ADDRESS_SETTING}443:443"
+    volumes:
+      - ./docker/nginx/config:/etc/nginx/conf.d
+      - ../.docker/nginx/log:/var/log/nginx
+      - ../:/var/www
+    environment:
+      TZ: ${TIME_ZONE-UTC}
+
+  php:
+    build:
+      context: ./docker/php
+      args:
+        USER_UID: ${USER_UID-1000}
+        USER_GID: ${USER_GID-1000}
+    volumes:
+      - ./docker/php/config/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/php/config/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ../:/var/www
+    working_dir: /var/www
+
+  mysql:
+    image: mysql/mysql-server:8.0
+    ports:
+      - "${IP_ADDRESS_SETTING}3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD-docker}
+      MYSQL_USER: ${DB_USERNAME-docker}
+      MYSQL_PASSWORD: ${DB_PASSWORD-docker}
+      MYSQL_DATABASE: ${DB_DATABASE-docker}
+      TZ: ${TIME_ZONE-UTC}
+    # command:
+    #   - mysqld
+    #   - --character-set-server=utf8mb4
+    #   - --collation-server=utf8mb4_ja_0900_as_cs_ks
+
+  postgres:
+    image: postgres:14.0-alpine
+    ports:
+      - "${IP_ADDRESS_SETTING}5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USERNAME-docker}
+      POSTGRES_PASSWORD: ${DB_PASSWORD-docker}
+      POSTGRES_DB: ${DB_DATABASE-docker}
+      TZ: ${TIME_ZONE-UTC}
+
+  redis:
+    image: redis:6.2
+    ports:
+      - "${IP_ADDRESS_SETTING}6379:6379"
+    volumes:
+      - redis:/data
+
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - "${IP_ADDRESS_SETTING}8001:8001"
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - ${IP_ADDRESS_SETTING}1025:1025
+      - ${IP_ADDRESS_SETTING}8025:8025
+
+  selenium:
+    image: selenium/hub
+
+  selenium-chrome:
+    image: selenium/node-chrome-debug
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium
+      - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+      - selenium
+
+volumes:
+  mysql:
+    driver: local
+  postgres:
+    driver: local
+  redis:
+    driver: local
