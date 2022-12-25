@@ -1,0 +1,9 @@
+#!/bin/sh
+
+DATABASE="${MYSQL_DATABASE}_test"
+
+CMD_MYSQL="mysql -u root -p${MYSQL_ROOT_PASSWORD}"
+
+echo " Creating database '$DATABASE'"
+$CMD_MYSQL -e "CREATE DATABASE ${DATABASE};"
+$CMD_MYSQL -e "GRANT ALL PRIVILEGES ON ${DATABASE}.* to '${MYSQL_USER}'@'%';"

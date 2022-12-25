@@ -7,8 +7,11 @@
     "workspaceFolder": "/var/www",
     "remoteUser": "vscode",
     "settings": {
+        "php.validate.enable": false,
+        "php.suggest.basic": false,
         "[php]": {
-            "editor.formatOnSave": true
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
         },
         "search.exclude": {
             "**/node_modules": true,
@@ -22,11 +25,9 @@
         "EditorConfig.EditorConfig",
         "mhutchie.git-graph",
         "eamodio.gitlens",
-        "onecentlin.laravel-blade",
-        "onecentlin.laravel5-snippets",
-        "emilast.LogFileHighlighter",
+        "xdebug.php-debug",
         "neilbrayfield.php-docblocker",
         "bmewburn.vscode-intelephense-client",
-        "felixfbecker.php-debug",
+        "recca0120.vscode-phpunit"
     ]
 }

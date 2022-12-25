@@ -1,4 +1,4 @@
-FROM php:8.0-cli-bullseye
+FROM php:8.1-cli-bullseye
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
@@ -14,15 +14,20 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LANG=${LOCALE}
 ENV TZ=${TIME_ZONE}
 
-COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
-COPY --from=node:16.12 /usr/local/bin /usr/local/bin
+COPY --from=composer:2.4.3 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update \
     && apt-get install -y $PKG $PKG_LIB \
     && pecl install imagick redis-5.3.4 xdebug-3.1.1 \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-enable imagick redis xdebug \
-    && docker-php-ext-install bcmath gd imap intl pdo_mysql pdo_pgsql pdo_sqlite xml zip \
+    && docker-php-ext-install bcmath exif gd imap intl pdo_mysql pdo_pgsql pdo_sqlite xml zip \
+    #
+    # nodejs
+    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g yarn \
     #
     # locale
     && sed -i -E "s/# (${LOCALE})/\1/" /etc/locale.gen \

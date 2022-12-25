@@ -76,8 +76,11 @@ Change it to your liking.
     "workspaceFolder": "/var/www",
     "remoteUser": "vscode",
     "settings": {
+        "php.validate.enable": false,
+        "php.suggest.basic": false,
         "[php]": {
-            "editor.formatOnSave": true
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
         },
         "search.exclude": {
             "**/node_modules": true,
@@ -91,14 +94,13 @@ Change it to your liking.
         "EditorConfig.EditorConfig",
         "mhutchie.git-graph",
         "eamodio.gitlens",
-        "onecentlin.laravel-blade",
-        "onecentlin.laravel5-snippets",
-        "emilast.LogFileHighlighter",
+        "xdebug.php-debug",
         "neilbrayfield.php-docblocker",
         "bmewburn.vscode-intelephense-client",
-        "felixfbecker.php-debug",
+        "recca0120.vscode-phpunit"
     ]
 }
+
 ```
 
 #### Docker Compose environment file
@@ -109,9 +111,6 @@ cp .devcontainer/.env.example .devcontainer/.env
 
 `.env` will be the environment file for Docker Compose.  
 Please refer to the file to set your preferences.
-
-> Note that the location where the .env file is loaded changes depending on the version of Docker Compose.
-> Please use v1.28 or higher.
 
 ```ini
 TIME_ZONE=Asia/Tokyo
@@ -132,6 +131,12 @@ It is convenient to configure the `hosts` with the configured IP address.
 ```
 127.127.127.127 php-develop.test
 ```
+
+> OS X
+> ```
+> sudo ifconfig lo0 alias 127.127.127.127
+> ```
+
 
 #### docker-compose.yml
 Docker is configured in `docker-compose.yml`.
@@ -160,7 +165,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:8.*" /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:9.*" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
