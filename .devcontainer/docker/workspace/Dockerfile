@@ -1,4 +1,4 @@
-FROM php:7.1-cli
+FROM php:7.4-cli
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
@@ -23,7 +23,7 @@ RUN ln -s /usr/local/bin/node /usr/local/bin/nodejs \
 
 RUN apt-get update \
     && apt-get install -y $PKG $PKG_LIB \
-    && pecl install imagick redis-5.1.1 xdebug-2.5.5 \
+    && pecl install imagick redis-5.1.1 xdebug-3.1.1 \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-enable imagick redis xdebug \
     && docker-php-ext-install gd mbstring pdo_mysql pdo_pgsql pdo_sqlite xml zip imap \
