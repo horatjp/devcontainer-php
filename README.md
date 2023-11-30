@@ -46,7 +46,7 @@ http://localhost/phpinfo.php
 
 ## Usage
 
-Clon **devcontainer-php** and create a project directory.
+Clone **devcontainer-php** and create a project directory.
 Go into the project directory and start VS Code.
 ```bash
 git clone https://github.com/horatjp/devcontainer-php.git php-develop
@@ -75,30 +75,35 @@ Change it to your liking.
     "service": "workspace",
     "workspaceFolder": "/var/www",
     "remoteUser": "vscode",
-    "settings": {
-        "php.validate.enable": false,
-        "php.suggest.basic": false,
-        "[php]": {
-            "editor.formatOnSave": true,
-            "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-        },
-        "search.exclude": {
-            "**/node_modules": true,
-            "**/bower_components": true,
-            "**/*.code-search": true,
-            "**/vendor/*/**": true
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "php.validate.enable": false,
+                "php.suggest.basic": false,
+                "[php]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+                },
+                "search.exclude": {
+                    "**/node_modules": true,
+                    "**/bower_components": true,
+                    "**/*.code-search": true,
+                    "**/vendor/*/**": true
+                }
+            },
+            "extensions": [
+                "mikestead.dotenv",
+                "EditorConfig.EditorConfig",
+                "mhutchie.git-graph",
+                "eamodio.gitlens",
+                "xdebug.php-debug",
+                "neilbrayfield.php-docblocker",
+                "bmewburn.vscode-intelephense-client",
+                "recca0120.vscode-phpunit"
+            ]
         }
-    },
-    "extensions": [
-        "mikestead.dotenv",
-        "EditorConfig.EditorConfig",
-        "mhutchie.git-graph",
-        "eamodio.gitlens",
-        "xdebug.php-debug",
-        "neilbrayfield.php-docblocker",
-        "bmewburn.vscode-intelephense-client",
-        "recca0120.vscode-phpunit"
-    ]
+    }
 }
 
 ```
@@ -132,7 +137,7 @@ It is convenient to configure the `hosts` with the configured IP address.
 127.127.127.127 php-develop.test
 ```
 
-> OS X
+> macOS
 > ```
 > sudo ifconfig lo0 alias 127.127.127.127
 > ```
@@ -165,7 +170,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:9.*" /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:5.5" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
