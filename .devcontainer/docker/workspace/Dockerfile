@@ -1,4 +1,4 @@
-FROM php:8.0-cli
+FROM php:8.1-cli
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
@@ -14,16 +14,16 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LANG=${LOCALE}
 ENV TZ=${TIME_ZONE}
 
-COPY --from=composer:2.4.3 /usr/bin/composer /usr/bin/composer
-COPY --from=node:18 /usr/local/bin/node /usr/local/bin/
-COPY --from=node:18 /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
+COPY --from=composer:2.5.8 /usr/bin/composer /usr/bin/composer
+COPY --from=node:20 /usr/local/bin/node /usr/local/bin/
+COPY --from=node:20 /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
 RUN ln -s /usr/local/bin/node /usr/local/bin/nodejs \
     && ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
     && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
 RUN apt-get update \
     && apt-get install -y $PKG $PKG_LIB \
-    && pecl install imagick redis-5.3.4 xdebug-3.1.1 \
+    && pecl install imagick redis-5.3.7 xdebug-3.2.2 \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-enable imagick redis xdebug \

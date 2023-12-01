@@ -39,7 +39,7 @@ services:
     working_dir: /var/www
 
   mysql:
-    image: mysql:8.0
+    image: mysql:8.1
     ports:
       - "${IP_ADDRESS_SETTING}3306:3306"
     volumes:
@@ -53,7 +53,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   postgres:
-    image: postgres:15.0-bullseye
+    image: postgres:15.5
     ports:
       - "${IP_ADDRESS_SETTING}5432:5432"
     volumes:
