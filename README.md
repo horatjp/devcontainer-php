@@ -170,7 +170,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:10.*" /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:11.*" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 

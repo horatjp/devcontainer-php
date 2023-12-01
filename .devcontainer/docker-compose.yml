@@ -53,7 +53,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   postgres:
-    image: postgres:15.5
+    image: postgres:16
     ports:
       - "${IP_ADDRESS_SETTING}5432:5432"
     volumes:
@@ -66,7 +66,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   redis:
-    image: redis:7.0
+    image: redis:7.2
     ports:
       - "${IP_ADDRESS_SETTING}6379:6379"
     volumes:
