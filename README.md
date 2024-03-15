@@ -170,7 +170,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:11.*" /tmp/laravel
+composer create-project laravel/laravel:11.* /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
@@ -179,6 +179,8 @@ http://php-develop.test
 or
 http://127.127.127.127
 
+
+#### Database
 
 If you want to use a database, you will need to configure it in the `.env` file.
 
@@ -205,6 +207,19 @@ DB_PASSWORD=docker
 Laravel migrate
 ```bash
 php artisan migrate:refresh --seed
+```
+
+#### Mailhog
+
+Mailhog is a mail catcher.
+You can check the mail sent from the application.
+http://php-develop.test:8025
+
+Set the following in the `.env` file.
+```ini
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
 ```
 
 ### Exit and resume

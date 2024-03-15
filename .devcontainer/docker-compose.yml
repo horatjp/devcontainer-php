@@ -39,7 +39,7 @@ services:
     working_dir: /var/www
 
   mysql:
-    image: mysql:8.1
+    image: mysql:8.3
     ports:
       - "${IP_ADDRESS_SETTING}3306:3306"
     volumes:
