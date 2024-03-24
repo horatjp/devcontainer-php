@@ -209,17 +209,39 @@ Laravel migrate
 php artisan migrate:refresh --seed
 ```
 
-#### Mailhog
+#### Mailpit
 
-Mailhog is a mail catcher.
+Mailpit is a mail catcher.
 You can check the mail sent from the application.
 http://php-develop.test:8025
 
 Set the following in the `.env` file.
 ```ini
 MAIL_MAILER=smtp
-MAIL_HOST=mailhog
+MAIL_HOST=mailpit
 MAIL_PORT=1025
+```
+
+#### MinIO
+
+MinIO is available for object storage.
+http://php-develop.test:8900
+minio:password
+
+
+```php
+composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
+```
+
+Set the following in the `.env` file.
+```ini
+AWS_ACCESS_KEY_ID=minio
+AWS_SECRET_ACCESS_KEY=password
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=default
+AWS_USE_PATH_STYLE_ENDPOINT=true
+AWS_ENDPOINT=http://minio:9001
+AWS_URL=http://php-develop.test:9001/default
 ```
 
 ### Exit and resume
