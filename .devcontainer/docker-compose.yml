@@ -77,8 +77,8 @@ services:
     ports:
       - "${IP_ADDRESS_SETTING}8001:8001"
 
-  mailhog:
-    image: mailhog/mailhog
+  mailpit:
+    image: axllent/mailpit:latest
     ports:
       - ${IP_ADDRESS_SETTING}1025:1025
       - ${IP_ADDRESS_SETTING}8025:8025

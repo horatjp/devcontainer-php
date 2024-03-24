@@ -209,17 +209,18 @@ Laravel migrate
 php artisan migrate:refresh --seed
 ```
 
-#### Mailhog
+#### Mailpit
 
-Mailhog is a mail catcher.
+Mailpit is a mail catcher.
 You can check the mail sent from the application.
 http://php-develop.test:8025
 
 Set the following in the `.env` file.
 ```ini
 MAIL_MAILER=smtp
-MAIL_HOST=mailhog
+MAIL_HOST=mailpit
 MAIL_PORT=1025
+```
 ```
 
 ### Exit and resume
