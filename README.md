@@ -125,6 +125,10 @@ DB_DATABASE=docker
 DB_USERNAME=docker
 DB_PASSWORD=docker
 
+MINIO_USERNAME=minio
+MINIO_PASSWORD=password
+MINIO_BUCKET=default
+
 # Local Loopback Address(127.0.0.0/8):
 IP_ADDRESS_SETTING=127.127.127.127:
 ```
