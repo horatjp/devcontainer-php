@@ -46,12 +46,11 @@ http://localhost/phpinfo.php
 
 ## Usage
 
-Clone **devcontainer-php** and create a project directory.
-Go into the project directory and start VS Code.
+Create a project directory, expand **devcontainer-php** and start VS Code.
 ```bash
-git clone https://github.com/horatjp/devcontainer-php.git php-develop
+mkdir php-develop
 cd php-develop
-rm -rf .git
+curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/php8.2.tar.gz | tar --strip-components=1 -xz
 code .
 ```
 
