@@ -29,6 +29,7 @@ RUN apt-get update \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-enable imagick mailparse redis xdebug \
     && docker-php-ext-install bcmath exif gd imap intl pcntl pdo_mysql pdo_pgsql pdo_sqlite xml zip \
+    && apt-get install -y chromium \
     #
     # locale
     && sed -i -E "s/# (${LOCALE})/\1/" /etc/locale.gen \

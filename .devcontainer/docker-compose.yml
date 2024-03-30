@@ -83,11 +83,6 @@ services:
       - ${IP_ADDRESS_SETTING}1025:1025
       - ${IP_ADDRESS_SETTING}8025:8025
 
-  selenium:
-    image: 'selenium/standalone-chrome'
-    volumes:
-      - '/dev/shm:/dev/shm'
-
   minio:
     image: minio/minio:latest
     ports:

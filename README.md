@@ -247,6 +247,26 @@ AWS_ENDPOINT=http://minio:9001
 AWS_URL=http://php-develop.test:9001/default
 ```
 
+#### Laravel Dusk
+
+Laravel Dusk is available for browser testing.
+```bash
+composer require laravel/dusk --dev
+php artisan dusk:install
+php artisan dusk:chrome-driver --detect
+```
+
+Set the following in the `.env` file.
+```ini
+APP_URL=http://nginx
+```
+
+Run the test.
+```bash
+php artisan dusk
+```
+
+
 ### Exit and resume
 
 When you exit VS Code, the container will also exit.
