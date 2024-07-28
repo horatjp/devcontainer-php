@@ -25,7 +25,10 @@ services:
             - ../:/var/www
         environment:
             TZ: ${TIME_ZONE-UTC}
-
+        networks:
+            default:
+                aliases:
+                    - minio.${DOMAIN-php-develop.test}
     php:
         build:
             context: ./docker/php

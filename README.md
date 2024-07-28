@@ -128,6 +128,8 @@ MINIO_USERNAME=minio
 MINIO_PASSWORD=password
 MINIO_BUCKET=default
 
+DOMAIN=php-develop.test
+
 # Local Loopback Address(127.0.0.0/8):
 IP_ADDRESS_SETTING=127.127.127.127:
 ```
@@ -246,6 +248,42 @@ AWS_USE_PATH_STYLE_ENDPOINT=true
 AWS_ENDPOINT=http://minio:9001
 AWS_URL=http://php-develop.test:9001/default
 ```
+
+If you want to use temporaryUrl or https
+
+Set the following in the `.env` file.
+```ini
+AWS_ACCESS_KEY_ID=minio
+AWS_SECRET_ACCESS_KEY=password
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=default
+AWS_USE_PATH_STYLE_ENDPOINT=true
+AWS_ENDPOINT=https://minio.php-develop.test
+AWS_SSL_VERIFY=false
+```
+
+```php:config/filesystems.php
+        's3' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => false,
+            'http'    => [
+                'verify' => env('AWS_SSL_VERIFY', true)
+            ]
+```
+
+
+It is convenient to configure the `hosts` with the configured IP address.
+```
+127.127.127.127 php-develop.test minio.php-develop.test
+```
+
 
 #### Laravel Dusk
 
