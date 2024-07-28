@@ -12,8 +12,8 @@ Launches a Docker container from Visual Studio Code and enables development with
 * MySQL
 * PostgreSQL
 * Redis
-* Mailhog
-* selenium
+* Mailpit
+* MinIO
 
 
 ## System requirements
