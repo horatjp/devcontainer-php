@@ -9,7 +9,7 @@ RUN apt-get update \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-enable imagick mailparse redis xdebug \
-    && docker-php-ext-install bcmath exif gd imap intl pdo_mysql pdo_pgsql pdo_sqlite xml zip \
+    && docker-php-ext-install bcmath exif gd imap intl mysqli pdo_mysql pdo_pgsql pdo_sqlite xml zip \
     #
     # user
     && groupmod -o -g ${USER_GID} www-data \
