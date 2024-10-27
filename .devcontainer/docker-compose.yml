@@ -17,18 +17,20 @@ services:
     nginx:
         build: ./docker/nginx
         ports:
-            - "${IP_ADDRESS_SETTING}80:80"
-            - "${IP_ADDRESS_SETTING}443:443"
+            - '${IP_ADDRESS_SETTING}80:80'
+            - '${IP_ADDRESS_SETTING}443:443'
         volumes:
             - ./docker/nginx/config:/etc/nginx/conf.d
             - ../.docker/nginx/log:/var/log/nginx
             - ../:/var/www
         environment:
             TZ: ${TIME_ZONE-UTC}
+
         networks:
             default:
                 aliases:
                     - minio.${DOMAIN-php-develop.test}
+
     php:
         build:
             context: ./docker/php
@@ -44,41 +46,41 @@ services:
     mysql:
         image: mysql:8.3
         ports:
-            - "${IP_ADDRESS_SETTING}3306:3306"
+            - '${IP_ADDRESS_SETTING}3306:3306'
         volumes:
             - mysql:/var/lib/mysql
             - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
         environment:
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD-docker}
-            MYSQL_USER: ${DB_USERNAME-docker}
-            MYSQL_PASSWORD: ${DB_PASSWORD-docker}
-            MYSQL_DATABASE: ${DB_DATABASE-docker}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD-db_password}
+            MYSQL_USER: ${DB_USERNAME-db_user}
+            MYSQL_PASSWORD: ${DB_PASSWORD-db_password}
+            MYSQL_DATABASE: ${DB_DATABASE-db_name}
             TZ: ${TIME_ZONE-UTC}
 
     postgres:
         image: postgres:16
         ports:
-            - "${IP_ADDRESS_SETTING}5432:5432"
+            - '${IP_ADDRESS_SETTING}5432:5432'
         volumes:
             - postgres:/var/lib/postgresql/data
             - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
         environment:
-            POSTGRES_USER: ${DB_USERNAME-docker}
-            POSTGRES_PASSWORD: ${DB_PASSWORD-docker}
-            POSTGRES_DB: ${DB_DATABASE-docker}
+            POSTGRES_USER: ${DB_USERNAME-db_user}
+            POSTGRES_PASSWORD: ${DB_PASSWORD-db_password}
+            POSTGRES_DB: ${DB_DATABASE-db_name}
             TZ: ${TIME_ZONE-UTC}
 
     redis:
         image: redis:7.2
         ports:
-            - "${IP_ADDRESS_SETTING}6379:6379"
+            - '${IP_ADDRESS_SETTING}6379:6379'
         volumes:
             - redis:/data
 
     redisinsight:
         image: redislabs/redisinsight:latest
         ports:
-            - "${IP_ADDRESS_SETTING}8001:8001"
+            - '${IP_ADDRESS_SETTING}8001:8001'
 
     mailpit:
         image: axllent/mailpit:latest
@@ -93,7 +95,7 @@ services:
             - '${IP_ADDRESS_SETTING}8900:8900'
         environment:
             - MINIO_ROOT_USER=${MINIO_USERNAME-minio}
-            - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD-password}
+            - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD-minio_password}
         volumes:
             - minio:/data/minio
         command: 'minio server /data/minio --address :9001 --console-address :8900'
@@ -103,7 +105,7 @@ services:
         depends_on:
             - minio
         entrypoint: >
-            /bin/sh -c " /usr/bin/mc config host add local http://minio:9001 ${MINIO_USERNAME-minio} ${MINIO_PASSWORD-password}; /usr/bin/mc mb -p local/${MINIO_BUCKET-default}; /usr/bin/mc anonymous set download local/${MINIO_BUCKET-default}; exit 0;"
+            /bin/sh -c " /usr/bin/mc config host add local http://minio:9001 ${MINIO_USERNAME-minio} ${MINIO_PASSWORD-minio_password}; /usr/bin/mc mb -p local/${MINIO_BUCKET-default}; /usr/bin/mc anonymous set download local/${MINIO_BUCKET-default}; exit 0;"
 
 volumes:
     mysql:

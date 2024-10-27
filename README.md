@@ -120,12 +120,12 @@ Please refer to the file to set your preferences.
 TIME_ZONE=Asia/Tokyo
 LOCALE=ja_JP.UTF-8
 
-DB_DATABASE=docker
-DB_USERNAME=docker
-DB_PASSWORD=docker
+DB_DATABASE=db_name
+DB_USERNAME=db_user
+DB_PASSWORD=db_password
 
 MINIO_USERNAME=minio
-MINIO_PASSWORD=password
+MINIO_PASSWORD=minio_password
 MINIO_BUCKET=default
 
 DOMAIN=php-develop.test
@@ -194,9 +194,9 @@ If you want to use a database, you will need to configure it in the `.env` file.
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
-DB_DATABASE=docker
-DB_USERNAME=docker
-DB_PASSWORD=docker
+DB_DATABASE=db_name
+DB_USERNAME=db_user
+DB_PASSWORD=db_password
 ```
 
 **PostgreSQL**
@@ -204,14 +204,14 @@ DB_PASSWORD=docker
 DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
-DB_DATABASE=docker
-DB_USERNAME=docker
-DB_PASSWORD=docker
+DB_DATABASE=db_name
+DB_USERNAME=db_user
+DB_PASSWORD=db_password
 ```
 
 Laravel migrate
 ```bash
-php artisan migrate:refresh --seed
+php artisan migrate:fresh --seed
 ```
 
 #### Mailpit
@@ -231,7 +231,7 @@ MAIL_PORT=1025
 
 MinIO is available for object storage.
 http://php-develop.test:8900
-minio:password
+minio:minio_password
 
 
 ```php
@@ -241,7 +241,7 @@ composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 Set the following in the `.env` file.
 ```ini
 AWS_ACCESS_KEY_ID=minio
-AWS_SECRET_ACCESS_KEY=password
+AWS_SECRET_ACCESS_KEY=minio_password
 AWS_DEFAULT_REGION=us-east-1
 AWS_BUCKET=default
 AWS_USE_PATH_STYLE_ENDPOINT=true
@@ -254,7 +254,7 @@ If you want to use temporaryUrl or https
 Set the following in the `.env` file.
 ```ini
 AWS_ACCESS_KEY_ID=minio
-AWS_SECRET_ACCESS_KEY=password
+AWS_SECRET_ACCESS_KEY=minio_password
 AWS_DEFAULT_REGION=us-east-1
 AWS_BUCKET=default
 AWS_USE_PATH_STYLE_ENDPOINT=true
@@ -277,7 +277,6 @@ AWS_SSL_VERIFY=false
                 'verify' => env('AWS_SSL_VERIFY', true)
             ]
 ```
-
 
 It is convenient to configure the `hosts` with the configured IP address.
 ```

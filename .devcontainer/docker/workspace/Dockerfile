@@ -23,7 +23,7 @@ RUN ln -s /usr/local/bin/node /usr/local/bin/nodejs \
     && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
 RUN apt-get update \
-    && apt-get install -y $PKG $PKG_LIB \
+    && apt-get install --no-install-recommends -y $PKG $PKG_LIB \
     && pecl install imagick mailparse redis-6.0.2 xdebug-3.3.1 \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
