@@ -8,11 +8,12 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.md]
-trim_trailing_whitespace = false
-
-[*.{yml,yaml}]
+[{*.json,*.yml,*.yaml}]
 indent_size = 2
 
-[docker-compose.yml]
+[*.{js,ts,jsx,tsx}]
+indent_size = 2
+
+[*.md]
 indent_size = 4
+trim_trailing_whitespace = false

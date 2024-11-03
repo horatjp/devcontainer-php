@@ -1,4 +1,4 @@
-# Visual Studio Code Remote Containers PHP Development
+# PHP Development Environment with VS Code Remote Containers
 
 **devcontainer-php** is a PHP development environment using [**Visual Studio Code Remote - Containers**](https://code.visualstudio.com/docs/remote/containers).
 Launches a Docker container from Visual Studio Code and enables development within the container.
@@ -6,14 +6,14 @@ Launches a Docker container from Visual Studio Code and enables development with
 
 ## Container
 
-* PHP(CLI)
+* PHP(CLI) ref: [php-cli](https://github.com/horatjp/image-php-cli)
+* PHP(FPM) ref: [php-fpm](https://github.com/horatjp/image-php-fpm)
 * nginx
-* PHP(FPM)
 * MySQL
 * PostgreSQL
 * Redis
 * Mailpit
-* MinIO
+* selenium
 
 
 ## System requirements
@@ -46,12 +46,12 @@ http://localhost/phpinfo.php
 
 ## Usage
 
-Create a project directory, expand **devcontainer-php** and start VS Code.
+Download **devcontainer-php** and place it in the project directory  and start VS Code.
+
 ```bash
-mkdir php-develop
-cd php-develop
-curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/php8.2.tar.gz | tar --strip-components=1 -xz
-code .
+mkdir -p php-develop
+curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/7.1.tar.gz | tar -xz --strip-components=1 -C php-develop
+code php-develop
 ```
 
 ### .devcontainer
@@ -69,26 +69,24 @@ Change it to your liking.
 {
     "name": "PHP Development",
     "dockerComposeFile": [
-        "docker-compose.yml"
+        "compose.yaml"
     ],
     "service": "workspace",
     "workspaceFolder": "/var/www",
     "remoteUser": "vscode",
-
+    "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 16 && nvm use 16",
     "customizations": {
         "vscode": {
             "settings": {
+                "search.exclude": {
+                    "**/node_modules": true,
+                    "**/vendor": true
+                },
                 "php.validate.enable": false,
                 "php.suggest.basic": false,
                 "[php]": {
                     "editor.formatOnSave": true,
                     "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-                },
-                "search.exclude": {
-                    "**/node_modules": true,
-                    "**/bower_components": true,
-                    "**/*.code-search": true,
-                    "**/vendor/*/**": true
                 }
             },
             "extensions": [
@@ -104,7 +102,6 @@ Change it to your liking.
         }
     }
 }
-
 ```
 
 #### Docker Compose environment file
@@ -124,12 +121,6 @@ DB_DATABASE=db_name
 DB_USERNAME=db_user
 DB_PASSWORD=db_password
 
-MINIO_USERNAME=minio
-MINIO_PASSWORD=minio_password
-MINIO_BUCKET=default
-
-DOMAIN=php-develop.test
-
 # Local Loopback Address(127.0.0.0/8):
 IP_ADDRESS_SETTING=127.127.127.127:
 ```
@@ -148,8 +139,8 @@ It is convenient to configure the `hosts` with the configured IP address.
 > ```
 
 
-#### docker-compose.yml
-Docker is configured in `docker-compose.yml`.
+#### compose.yaml
+Docker is configured in `compose.yaml`.
 Other detailed settings for Docker exist in the `docker` directory.
 These are not dedicated to VS Code, so they can be run on their own.
 
@@ -175,7 +166,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project laravel/laravel:11.* /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:5.8" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
@@ -186,8 +177,22 @@ http://127.127.127.127
 
 
 #### Database
-
 If you want to use a database, you will need to configure it in the `.env` file.
+
+**SQLite**
+
+```bash
+touch database/database.sqlite
+```
+
+```ini
+DB_CONNECTION=sqlite
+# DB_HOST=null
+# DB_PORT=null
+# DB_DATABASE=null
+# DB_USERNAME=null
+# DB_PASSWORD=null
+```
 
 **MySQL**
 ```ini
@@ -215,7 +220,6 @@ php artisan migrate:fresh --seed
 ```
 
 #### Mailpit
-
 Mailpit is a mail catcher.
 You can check the mail sent from the application.
 http://php-develop.test:8025
@@ -227,93 +231,8 @@ MAIL_HOST=mailpit
 MAIL_PORT=1025
 ```
 
-#### MinIO
 
-MinIO is available for object storage.
-http://php-develop.test:8900
-minio:minio_password
+## Finally.
 
-
-```php
-composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
-```
-
-Set the following in the `.env` file.
-```ini
-AWS_ACCESS_KEY_ID=minio
-AWS_SECRET_ACCESS_KEY=minio_password
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=default
-AWS_USE_PATH_STYLE_ENDPOINT=true
-AWS_ENDPOINT=http://minio:9001
-AWS_URL=http://php-develop.test:9001/default
-```
-
-If you want to use temporaryUrl or https
-
-Set the following in the `.env` file.
-```ini
-AWS_ACCESS_KEY_ID=minio
-AWS_SECRET_ACCESS_KEY=minio_password
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=default
-AWS_USE_PATH_STYLE_ENDPOINT=true
-AWS_ENDPOINT=https://minio.php-develop.test
-AWS_SSL_VERIFY=false
-```
-
-```php:config/filesystems.php
-        's3' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
-            'http'    => [
-                'verify' => env('AWS_SSL_VERIFY', true)
-            ]
-```
-
-It is convenient to configure the `hosts` with the configured IP address.
-```
-127.127.127.127 php-develop.test minio.php-develop.test
-```
-
-
-#### Laravel Dusk
-
-Laravel Dusk is available for browser testing.
-```bash
-composer require laravel/dusk --dev
-php artisan dusk:install
-php artisan dusk:chrome-driver --detect
-```
-
-Set the following in the `.env` file.
-```ini
-APP_URL=http://nginx
-```
-
-Run the test.
-```bash
-php artisan dusk
-```
-
-
-### Exit and resume
-
-When you exit VS Code, the container will also exit.
-
-The next time you start it, the container will start automatically and start with the environment in the container.
-
-Alternatively, with VS Code open, use `Ctrl + R` to show the recently opened folders and select "Dev Container" to start developing in a container environment.
-
-## In the end
-
-Sharing a `.devcontainer` allows everyone involved in a project to develop in the same environment.
-
-Although it is not officially up and running yet, it may become possible to develop using [**GitHub Codespaces**](https://github.com/features/codespaces).
+By sharing .devcontainer, everyone involved in the project can develop in the same environment.
+.devcontainer is also compatible with GitHub Codespaces, so you can use the same development environment in the cloud.
