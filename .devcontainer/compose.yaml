@@ -23,7 +23,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   php:
-    image: ghcr.io/horatjp/php-fpm:7.1
+    image: ghcr.io/horatjp/php-fpm:7.4
     volumes:
       - ../:/var/www
     working_dir: /var/www
@@ -43,7 +43,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   postgres:
-    image: postgres:10-bullseye
+    image: postgres:11-bullseye
     ports:
       - ${IP_ADDRESS_SETTING}5432:5432
     volumes:
@@ -56,7 +56,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   redis:
-    image: redis:4.0
+    image: redis:5.0
     ports:
       - ${IP_ADDRESS_SETTING}6379:6379
     volumes:

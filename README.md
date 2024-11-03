@@ -50,7 +50,7 @@ Download **devcontainer-php** and place it in the project directory  and start V
 
 ```bash
 mkdir -p php-develop
-curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/7.1.tar.gz | tar -xz --strip-components=1 -C php-develop
+curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/7.4.tar.gz | tar -xz --strip-components=1 -C php-develop
 code php-develop
 ```
 
@@ -67,40 +67,40 @@ Change it to your liking.
 
 ```json
 {
-    "name": "PHP Development",
-    "dockerComposeFile": [
-        "compose.yaml"
-    ],
-    "service": "workspace",
-    "workspaceFolder": "/var/www",
-    "remoteUser": "vscode",
-    "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 16 && nvm use 16",
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "search.exclude": {
-                    "**/node_modules": true,
-                    "**/vendor": true
-                },
-                "php.validate.enable": false,
-                "php.suggest.basic": false,
-                "[php]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-                }
-            },
-            "extensions": [
-                "mikestead.dotenv",
-                "EditorConfig.EditorConfig",
-                "mhutchie.git-graph",
-                "eamodio.gitlens",
-                "xdebug.php-debug",
-                "neilbrayfield.php-docblocker",
-                "bmewburn.vscode-intelephense-client",
-                "recca0120.vscode-phpunit"
-            ]
+  "name": "PHP Development",
+  "dockerComposeFile": [
+    "compose.yaml"
+  ],
+  "service": "workspace",
+  "workspaceFolder": "/var/www",
+  "remoteUser": "vscode",
+  "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 16 && nvm use 16",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/vendor": true
+        },
+        "php.validate.enable": false,
+        "php.suggest.basic": false,
+        "[php]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
         }
+      },
+      "extensions": [
+        "mikestead.dotenv",
+        "EditorConfig.EditorConfig",
+        "mhutchie.git-graph",
+        "eamodio.gitlens",
+        "xdebug.php-debug",
+        "neilbrayfield.php-docblocker",
+        "bmewburn.vscode-intelephense-client",
+        "recca0120.vscode-phpunit"
+      ]
     }
+  }
 }
 ```
 
@@ -166,7 +166,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:5.8" /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:6.*" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
