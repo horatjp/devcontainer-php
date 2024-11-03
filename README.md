@@ -13,8 +13,7 @@ Launches a Docker container from Visual Studio Code and enables development with
 * PostgreSQL
 * Redis
 * Mailpit
-* selenium
-
+* MinIO
 
 ## System requirements
 
@@ -50,7 +49,7 @@ Download **devcontainer-php** and place it in the project directory  and start V
 
 ```bash
 mkdir -p php-develop
-curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/8.1.tar.gz | tar -xz --strip-components=1 -C php-develop
+curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/8.2.tar.gz | tar -xz --strip-components=1 -C php-develop
 code php-develop
 ```
 
@@ -74,7 +73,7 @@ Change it to your liking.
   "service": "workspace",
   "workspaceFolder": "/var/www",
   "remoteUser": "vscode",
-  "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 16 && nvm use 16",
+  "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 20 && nvm use 20",
   "customizations": {
     "vscode": {
       "settings": {
@@ -166,7 +165,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:10.*" /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:11.*" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
@@ -229,6 +228,82 @@ Set the following in the `.env` file.
 MAIL_MAILER=smtp
 MAIL_HOST=mailpit
 MAIL_PORT=1025
+```
+
+
+#### MinIO
+
+MinIO is available for object storage.
+http://php-develop.test:8900
+minio:minio_password
+
+
+```php
+composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
+```
+
+Set the following in the `.env` file.
+```ini
+AWS_ACCESS_KEY_ID=minio
+AWS_SECRET_ACCESS_KEY=minio_password
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=default
+AWS_USE_PATH_STYLE_ENDPOINT=true
+AWS_ENDPOINT=http://minio:9001
+AWS_URL=http://php-develop.test:9001/default
+```
+
+If you want to use temporaryUrl or https
+
+Set the following in the `.env` file.
+```ini
+AWS_ACCESS_KEY_ID=minio
+AWS_SECRET_ACCESS_KEY=minio_password
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=default
+AWS_USE_PATH_STYLE_ENDPOINT=true
+AWS_ENDPOINT=https://minio.php-develop.test
+AWS_SSL_VERIFY=false
+```
+
+```php:config/filesystems.php
+        's3' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => false,
+            'http'    => [
+                'verify' => env('AWS_SSL_VERIFY', true)
+            ]
+```
+
+It is convenient to configure the `hosts` with the configured IP address.
+```
+127.127.127.127 php-develop.test minio.php-develop.test
+```
+
+#### Laravel Dusk
+
+Laravel Dusk is available for browser testing.
+```bash
+composer require laravel/dusk --dev
+php artisan dusk:install
+php artisan dusk:chrome-driver --detect
+```
+
+Set the following in the `.env` file.
+```ini
+APP_URL=http://nginx
+```
+
+Run the test.
+```bash
+php artisan dusk
 ```
 
 
