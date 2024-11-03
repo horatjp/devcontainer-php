@@ -1,0 +1,87 @@
+services:
+  workspace:
+    build:
+      context: ./docker/workspace
+      args:
+        LOCALE: ${LOCALE-C}
+    environment:
+      TZ: ${TIME_ZONE-UTC}
+    tty: true
+    volumes:
+      - ../:/var/www
+    working_dir: /var/www
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - ${IP_ADDRESS_SETTING}80:80
+      - ${IP_ADDRESS_SETTING}443:443
+    volumes:
+      - ./docker/nginx/config:/etc/nginx/conf.d
+      - ../:/var/www
+    environment:
+      TZ: ${TIME_ZONE-UTC}
+
+  php:
+    image: ghcr.io/horatjp/php-fpm:7.1
+    volumes:
+      - ../:/var/www
+    working_dir: /var/www
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - ${IP_ADDRESS_SETTING}3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD-db_password}
+      MYSQL_USER: ${DB_USERNAME-db_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD-db_password}
+      MYSQL_DATABASE: ${DB_DATABASE-db_name}
+      TZ: ${TIME_ZONE-UTC}
+
+  postgres:
+    image: postgres:10-bullseye
+    ports:
+      - ${IP_ADDRESS_SETTING}5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: ${DB_USERNAME-db_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD-db_password}
+      POSTGRES_DB: ${DB_DATABASE-db_name}
+      TZ: ${TIME_ZONE-UTC}
+
+  redis:
+    image: redis:4.0
+    ports:
+      - ${IP_ADDRESS_SETTING}6379:6379
+    volumes:
+      - redis:/data
+
+  redisinsight:
+    image: redislabs/redisinsight:1.10.0
+    ports:
+      - ${IP_ADDRESS_SETTING}8001:8001
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - ${IP_ADDRESS_SETTING}1025:1025
+      - ${IP_ADDRESS_SETTING}8025:8025
+
+  selenium:
+    image: selenium/standalone-chrome
+    volumes:
+      - /dev/shm:/dev/shm
+
+volumes:
+  mysql:
+    driver: local
+  postgres:
+    driver: local
+  redis:
+    driver: local

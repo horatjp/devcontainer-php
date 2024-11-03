@@ -1,4 +1,4 @@
-# Visual Studio Code Remote Containers PHP Development
+# PHP Development Environment with VS Code Remote Containers
 
 **devcontainer-php** is a PHP development environment using [**Visual Studio Code Remote - Containers**](https://code.visualstudio.com/docs/remote/containers).
 Launches a Docker container from Visual Studio Code and enables development within the container.
@@ -6,13 +6,13 @@ Launches a Docker container from Visual Studio Code and enables development with
 
 ## Container
 
-* PHP(CLI)
+* PHP(CLI) ref: [php-cli](https://github.com/horatjp/image-php-cli)
+* PHP(FPM) ref: [php-fpm](https://github.com/horatjp/image-php-fpm)
 * nginx
-* PHP(FPM)
 * MySQL
 * PostgreSQL
 * Redis
-* Mailhog
+* Mailpit
 * selenium
 
 
@@ -46,13 +46,12 @@ http://localhost/phpinfo.php
 
 ## Usage
 
-Clone **devcontainer-php** and create a project directory.
-Go into the project directory and start VS Code.
+Download **devcontainer-php** and place it in the project directory  and start VS Code.
+
 ```bash
-git clone https://github.com/horatjp/devcontainer-php.git php-develop
-cd php-develop
-rm -rf .git
-code .
+mkdir -p php-develop
+curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/7.1.tar.gz | tar -xz --strip-components=1 -C php-develop
+code php-develop
 ```
 
 ### .devcontainer
@@ -70,26 +69,24 @@ Change it to your liking.
 {
     "name": "PHP Development",
     "dockerComposeFile": [
-        "docker-compose.yml"
+        "compose.yaml"
     ],
     "service": "workspace",
     "workspaceFolder": "/var/www",
     "remoteUser": "vscode",
-
+    "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 16 && nvm use 16",
     "customizations": {
         "vscode": {
             "settings": {
+                "search.exclude": {
+                    "**/node_modules": true,
+                    "**/vendor": true
+                },
                 "php.validate.enable": false,
                 "php.suggest.basic": false,
                 "[php]": {
                     "editor.formatOnSave": true,
                     "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-                },
-                "search.exclude": {
-                    "**/node_modules": true,
-                    "**/bower_components": true,
-                    "**/*.code-search": true,
-                    "**/vendor/*/**": true
                 }
             },
             "extensions": [
@@ -105,7 +102,6 @@ Change it to your liking.
         }
     }
 }
-
 ```
 
 #### Docker Compose environment file
@@ -121,9 +117,9 @@ Please refer to the file to set your preferences.
 TIME_ZONE=Asia/Tokyo
 LOCALE=ja_JP.UTF-8
 
-DB_DATABASE=docker
-DB_USERNAME=docker
-DB_PASSWORD=docker
+DB_DATABASE=db_name
+DB_USERNAME=db_user
+DB_PASSWORD=db_password
 
 # Local Loopback Address(127.0.0.0/8):
 IP_ADDRESS_SETTING=127.127.127.127:
@@ -143,8 +139,8 @@ It is convenient to configure the `hosts` with the configured IP address.
 > ```
 
 
-#### docker-compose.yml
-Docker is configured in `docker-compose.yml`.
+#### compose.yaml
+Docker is configured in `compose.yaml`.
 Other detailed settings for Docker exist in the `docker` directory.
 These are not dedicated to VS Code, so they can be run on their own.
 
@@ -170,7 +166,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:5.5" /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:5.8" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
@@ -180,16 +176,32 @@ or
 http://127.127.127.127
 
 
+#### Database
 If you want to use a database, you will need to configure it in the `.env` file.
+
+**SQLite**
+
+```bash
+touch database/database.sqlite
+```
+
+```ini
+DB_CONNECTION=sqlite
+# DB_HOST=null
+# DB_PORT=null
+# DB_DATABASE=null
+# DB_USERNAME=null
+# DB_PASSWORD=null
+```
 
 **MySQL**
 ```ini
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
-DB_DATABASE=docker
-DB_USERNAME=docker
-DB_PASSWORD=docker
+DB_DATABASE=db_name
+DB_USERNAME=db_user
+DB_PASSWORD=db_password
 ```
 
 **PostgreSQL**
@@ -197,26 +209,30 @@ DB_PASSWORD=docker
 DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
-DB_DATABASE=docker
-DB_USERNAME=docker
-DB_PASSWORD=docker
+DB_DATABASE=db_name
+DB_USERNAME=db_user
+DB_PASSWORD=db_password
 ```
 
 Laravel migrate
 ```bash
-php artisan migrate:refresh --seed
+php artisan migrate:fresh --seed
 ```
 
-### Exit and resume
+#### Mailpit
+Mailpit is a mail catcher.
+You can check the mail sent from the application.
+http://php-develop.test:8025
 
-When you exit VS Code, the container will also exit.
+Set the following in the `.env` file.
+```ini
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
+```
 
-The next time you start it, the container will start automatically and start with the environment in the container.
 
-Alternatively, with VS Code open, use `Ctrl + R` to show the recently opened folders and select "Dev Container" to start developing in a container environment.
+## Finally.
 
-## In the end
-
-Sharing a `.devcontainer` allows everyone involved in a project to develop in the same environment.
-
-Although it is not officially up and running yet, it may become possible to develop using [**GitHub Codespaces**](https://github.com/features/codespaces).
+By sharing .devcontainer, everyone involved in the project can develop in the same environment.
+.devcontainer is also compatible with GitHub Codespaces, so you can use the same development environment in the cloud.

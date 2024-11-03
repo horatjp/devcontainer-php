@@ -1,10 +1,6 @@
 #!/bin/bash
-set -eu
+set -e
 
-DATABASE="${POSTGRES_DB}_test"
-
-echo " Creating database '$DATABASE'"
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-  CREATE DATABASE $DATABASE;
-  GRANT ALL PRIVILEGES ON DATABASE $DATABASE TO $POSTGRES_USER;
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "postgres" <<-EOSQL
+    CREATE DATABASE ${POSTGRES_DB}_test;
 EOSQL
