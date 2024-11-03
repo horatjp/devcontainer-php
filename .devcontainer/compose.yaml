@@ -23,7 +23,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   php:
-    image: ghcr.io/horatjp/php-fpm:8.0
+    image: ghcr.io/horatjp/php-fpm:8.1
     volumes:
       - ../:/var/www
     working_dir: /var/www
@@ -43,7 +43,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   postgres:
-    image: postgres:12
+    image: postgres:14
     ports:
       - ${IP_ADDRESS_SETTING}5432:5432
     volumes:
@@ -56,16 +56,16 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   redis:
-    image: redis:6.2
+    image: redis:7.2
     ports:
       - ${IP_ADDRESS_SETTING}6379:6379
     volumes:
       - redis:/data
 
   redisinsight:
-    image: redislabs/redisinsight:1.14.0
+    image: redis/redisinsight:latest
     ports:
-      - ${IP_ADDRESS_SETTING}8001:8001
+      - ${IP_ADDRESS_SETTING}5540:5540
 
   mailpit:
     image: axllent/mailpit:latest

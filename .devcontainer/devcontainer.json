@@ -6,7 +6,7 @@
   "service": "workspace",
   "workspaceFolder": "/var/www",
   "remoteUser": "vscode",
-  "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 16 && nvm use 16",
+  "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 18 && nvm use 18",
   "customizations": {
     "vscode": {
       "settings": {

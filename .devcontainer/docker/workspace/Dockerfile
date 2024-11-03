@@ -1,4 +1,4 @@
-FROM ghcr.io/horatjp/php-cli:8.0
+FROM ghcr.io/horatjp/php-cli:8.1
 
 ARG LOCALE=en_US.UTF-8
 
