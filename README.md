@@ -50,7 +50,7 @@ Download **devcontainer-php** and place it in the project directory  and start V
 
 ```bash
 mkdir -p php-develop
-curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/7.4.tar.gz | tar -xz --strip-components=1 -C php-develop
+curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/8.0.tar.gz | tar -xz --strip-components=1 -C php-develop
 code php-develop
 ```
 
@@ -166,7 +166,7 @@ Please give it a try.
 I would like to install Laravel.
 
 ```bash
-composer create-project --prefer-dist "laravel/laravel:6.*" /tmp/laravel
+composer create-project --prefer-dist "laravel/laravel:9.*" /tmp/laravel
 mv -n /tmp/laravel/* /tmp/laravel/.[^\.]* .
 ```
 
