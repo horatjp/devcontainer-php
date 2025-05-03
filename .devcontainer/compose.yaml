@@ -27,7 +27,7 @@ services:
           - minio.${DOMAIN-php-develop.test}
 
   php:
-    image: ghcr.io/horatjp/php-fpm:8.2
+    image: ghcr.io/horatjp/php-fpm:8.3
     volumes:
       - ../:/var/www
     working_dir: /var/www
