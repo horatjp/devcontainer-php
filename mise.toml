@@ -1,0 +1,3 @@
+[tools]
+# Node.js
+node = "24.12.0"

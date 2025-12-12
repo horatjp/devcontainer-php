@@ -49,7 +49,7 @@ Download **devcontainer-php** and place it in the project directory  and start V
 
 ```bash
 mkdir -p php-develop
-curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/8.3.tar.gz | tar -xz --strip-components=1 -C php-develop
+curl -L https://github.com/horatjp/devcontainer-php/archive/refs/tags/8.4.tar.gz | tar -xz --strip-components=1 -C php-develop
 code php-develop
 ```
 
@@ -73,7 +73,7 @@ Change it to your liking.
   "service": "workspace",
   "workspaceFolder": "/var/www",
   "remoteUser": "vscode",
-  "postCreateCommand": ". ~/.nvm/nvm.sh && nvm install 20 && nvm use 20",
+  "postCreateCommand": "mise trust && mise install",
   "customizations": {
     "vscode": {
       "settings": {

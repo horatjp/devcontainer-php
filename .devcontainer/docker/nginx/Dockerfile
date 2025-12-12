@@ -1,4 +1,4 @@
-FROM nginx:1.27.2
+FROM nginx:1.29.4
 
 RUN apt-get update && apt-get -y install openssl \
     && openssl req -newkey rsa:2048 -x509 -nodes -set_serial 1 -days 3650 \

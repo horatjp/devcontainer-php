@@ -1,5 +1,6 @@
 services:
   workspace:
+    hostname: workspace
     build:
       context: ./docker/workspace
       args:
@@ -27,13 +28,13 @@ services:
           - minio.${DOMAIN-php-develop.test}
 
   php:
-    image: ghcr.io/horatjp/php-fpm:8.3
+    image: ghcr.io/horatjp/php-fpm:8.4
     volumes:
       - ../:/var/www
     working_dir: /var/www
 
   mysql:
-    image: mysql:8.0
+    image: mysql:9.5
     ports:
       - ${IP_ADDRESS_SETTING}3306:3306
     volumes:
@@ -47,7 +48,7 @@ services:
       TZ: ${TIME_ZONE-UTC}
 
   postgres:
-    image: postgres:16
+    image: postgres:18
     ports:
       - ${IP_ADDRESS_SETTING}5432:5432
     volumes:
@@ -58,9 +59,10 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD-db_password}
       POSTGRES_DB: ${DB_DATABASE-db_name}
       TZ: ${TIME_ZONE-UTC}
+      PGDATA: /var/lib/postgresql/data
 
   redis:
-    image: redis:7.4
+    image: redis:8.4
     ports:
       - ${IP_ADDRESS_SETTING}6379:6379
     volumes:
@@ -87,7 +89,7 @@ services:
       - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD-minio_password}
     volumes:
       - minio:/data/minio
-    command: 'minio server /data/minio --address :9001 --console-address :8900'
+    command: "minio server /data/minio --address :9001 --console-address :8900"
 
   minio-create-buckets:
     image: minio/mc
